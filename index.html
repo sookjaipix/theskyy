@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แบบฟอร์มการรายงานปฏิบัติการ - เทศบาลตำบลคลองปราบ</title>
+  <!-- Google Fonts: Sarabun -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- html2canvas library for JPEG export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --primary-color: #0f766e;
+      --primary-hover: #115e59;
+      --bg-color: #f1f5f9;
+      --paper-border: #1e293b;
+      --line-color: #475569;
+      --input-bg: #f8fafc;
+      --input-border: #cbd5e1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Sarabun', 'TH Sarabun New', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+    }
+
+    /* Top Control Bar */
+    .toolbar {
+      width: 100%;
+      max-width: 210mm;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 12px 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toolbar-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toolbar-title .badge {
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      font-size: 13.5px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease-in-out;
+    }
+
+    .btn-primary {
+      background-color: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(2, 132, 199, 0.25);
+    }
+
+    .btn-primary:hover {
+      background-color: #0369a1;
+    }
+
+    .btn-success {
+      background-color: #16a34a;
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(22, 163, 74, 0.25);
+    }
+
+    .btn-success:hover {
+      background-color: #15803d;
+    }
+
+    .btn-secondary {
+      background-color: #f8fafc;
+      color: #334155;
+      border-color: #cbd5e1;
+    }
+
+    .btn-secondary:hover {
+      background-color: #e2e8f0;
+    }
+
+    .btn-danger {
+      background-color: #ffffff;
+      color: #dc2626;
+      border-color: #fca5a5;
+    }
+
+    .btn-danger:hover {
+      background-color: #fef2f2;
+    }
+
+    /* Paper Area: EXACT HALF A4 (210mm x 148.5mm) */
+    .paper-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-x: auto;
+      padding-bottom: 24px;
+    }
+
+    .half-a4-sheet {
+      width: 210mm;
+      height: 148.5mm;
+      min-width: 210mm;
+      min-height: 148.5mm;
+      max-width: 210mm;
+      max-height: 148.5mm;
+      background: #ffffff;
+      padding: 6.5mm 8.5mm;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      border: 1.5px solid #1e293b;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      background-clip: padding-box;
+    }
+
+    /* Header styling */
+    .report-header {
+      text-align: center;
+      margin-bottom: 3px;
+      border-bottom: 1.5px solid #1e293b;
+      padding-bottom: 3px;
+    }
+
+    .report-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.3;
+      letter-spacing: 0.1px;
+    }
+
+    .report-subtitle {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1e293b;
+      line-height: 1.3;
+    }
+
+    /* Form Rows */
+    .form-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 3.5px;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      line-height: 1.4;
+      min-height: 25px;
+    }
+
+    .field-label {
+      font-weight: 600;
+      color: #0f172a;
+      white-space: nowrap;
+      flex-shrink: 0;
+      line-height: 1.4;
+      padding-bottom: 2px;
+    }
+
+    .field-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    /* Input styling: tuned for Thai typography to prevent sunken text & cutoffs */
+    .input-fill {
+      border: none;
+      border-bottom: 1.2px dotted #475569;
+      background: transparent;
+      padding: 1px 4px 3px 4px; /* clearance for Thai descenders (ุ ู ฐ ญ) */
+      font-size: 12px;
+      line-height: 1.45; /* clearance for Thai tone marks (ิ ี ่ ้) */
+      color: #090d16;
+      outline: none;
+      width: 100%;
+      min-width: 0;
+      font-family: inherit;
+      font-weight: 500;
+      box-sizing: border-box;
+      transition: border-color 0.15s, background-color 0.15s, font-size 0.1s;
+    }
+
+    .input-fill:focus {
+      border-bottom: 1.5px solid #0284c7;
+      background-color: #f0f9ff;
+    }
+
+    .input-fill::placeholder {
+      color: #94a3b8;
+      font-size: 11px;
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    /* Section Boxes */
+    .section-box {
+      border: 1px solid #334155;
+      border-radius: 4px;
+      padding: 3px 6px 4px 6px;
+      background: #fdfdfd;
+    }
+
+    .section-heading {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 2.5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      line-height: 1.3;
+    }
+
+    /* Vital signs & Assessment table */
+    .vital-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      margin-bottom: 3.5px;
+    }
+
+    .vital-table td, .vital-table th {
+      border: 1px solid #cbd5e1;
+      padding: 1px 3px;
+      text-align: center;
+    }
+
+    .vital-table th {
+      background: #f1f5f9;
+      font-weight: 600;
+      font-size: 10.5px;
+      color: #334155;
+      width: 20%;
+      line-height: 1.3;
+    }
+
+    .vital-table td {
+      height: 25px;
+      vertical-align: middle;
+    }
+
+    .vital-table td input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      text-align: center;
+      font-size: 11.5px;
+      line-height: 23px;
+      padding: 1px 2px;
+      background: transparent;
+      outline: none;
+      font-family: inherit;
+      font-weight: 600;
+      color: #090d16;
+      box-sizing: border-box;
+    }
+
+    .vital-table td input:focus {
+      background: #f0f9ff;
+    }
+
+    /* GCS Row */
+    .gcs-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .gcs-item {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 3px;
+      padding: 2px 5px;
+      min-height: 25px;
+      box-sizing: border-box;
+    }
+
+    .gcs-item .field-label {
+      font-size: 10.5px;
+      padding-bottom: 0;
+    }
+
+    .gcs-item input {
+      flex: 1;
+      min-width: 24px;
+      border: none;
+      border-bottom: 1.2px dotted #64748b;
+      background: transparent;
+      padding: 1px 2px 2px 2px;
+      font-size: 11.5px;
+      line-height: 1.4;
+      text-align: center;
+      outline: none;
+      font-family: inherit;
+      font-weight: 600;
+      color: #090d16;
+    }
+
+    .gcs-item input:focus {
+      background: #f0f9ff;
+      border-bottom-color: #0284c7;
+    }
+
+    /* Officers 4 items */
+    .officers-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 14px;
+      row-gap: 2.5px;
+      font-size: 11.5px;
+    }
+
+    .officer-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .officer-item .officer-num {
+      font-weight: 600;
+      color: #1e293b;
+      min-width: 48px;
+      flex-shrink: 0;
+      line-height: 1.4;
+    }
+
+    /* Print media styling */
+    @media print {
+      body {
+        background: transparent;
+        padding: 0;
+      }
+      .toolbar, .tip-text {
+        display: none !important;
+      }
+      .paper-wrapper {
+        padding: 0;
+      }
+      .half-a4-sheet {
+        box-shadow: none;
+        border: 1.5px solid #000000;
+        margin: 0;
+        page-break-inside: avoid;
+      }
+      .input-fill, .gcs-item input {
+        border-bottom: 1px dotted #000000 !important;
+      }
+    }
+
+    .tip-text {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #64748b;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-title">
+      <span>📄 ระบบบันทึกแบบฟอร์มการรายงานปฏิบัติการ</span>
+      <span class="badge">ขนาดครึ่งหน้า A4 (210 × 148.5 มม.)</span>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-success" id="btnSaveJpeg" onclick="saveAsJPEG()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        บันทึกภาพเป็น JPEG
+      </button>
+      <button class="btn btn-primary" onclick="window.print()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        พิมพ์ / PDF
+      </button>
+      <button class="btn btn-secondary" onclick="fillSampleData()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        ใส่ข้อมูลตัวอย่าง
+      </button>
+      <button class="btn btn-danger" onclick="clearForm()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        ล้างข้อมูล
+      </button>
+    </div>
+  </div>
+
+  <!-- Sheet Container: Exactly Half A4 (210mm x 148.5mm) -->
+  <div class="paper-wrapper">
+    <div class="half-a4-sheet" id="reportSheet">
+      
+      <!-- หัวรายงาน -->
+      <div class="report-header">
+        <div class="report-title">แบบฟอร์มการรายงานปฏิบัติการจังหวัดสุราษฎร์ธานี</div>
+        <div class="report-subtitle">ชื่อหน่วยบริการ เทศบาลตำบลคลองปราบ</div>
+      </div>
+
+      <div class="form-grid">
+        <!-- แถวที่ 1: ข้อมูลเวลา, วันเดือนปี, ID -->
+        <div class="form-row">
+          <div class="field-inline" style="flex: 1.1;">
+            <span class="field-label">ข้อมูลเวลา:</span>
+            <input type="text" id="time_info" class="input-fill" placeholder="เช่น 14:30 น.">
+          </div>
+          <div class="field-inline" style="flex: 1.3;">
+            <span class="field-label">วันเดือนปี:</span>
+            <input type="text" id="date_info" class="input-fill" placeholder="เช่น 17 พ.ย. 2569">
+          </div>
+          <div class="field-inline" style="flex: 1.5;">
+            <span class="field-label">ID:</span>
+            <input type="text" id="patient_id" class="input-fill" placeholder="เลขประจำตัว / รหัสเคส">
+          </div>
+        </div>
+
+        <!-- แถวที่ 2: ชื่อสกุลผู้ป่วย, อายุ -->
+        <div class="form-row">
+          <div class="field-inline" style="flex: 3.2;">
+            <span class="field-label">ชื่อสกุลผู้ป่วย:</span>
+            <input type="text" id="patient_name" class="input-fill" placeholder="ชื่อ - นามสกุล">
+          </div>
+          <div class="field-inline" style="flex: 0.9;">
+            <span class="field-label">อายุ:</span>
+            <input type="text" id="patient_age" class="input-fill" style="text-align: center;" placeholder="ระบุ">
+            <span class="field-label" style="font-weight: 400;">ปี</span>
+          </div>
+        </div>
+
+        <!-- แถวที่ 3: ที่เกิดเหตุ บ้านเลขที่ หมู่ ตำบล -->
+        <div class="form-row">
+          <span class="field-label">ที่เกิดเหตุ:</span>
+          <div class="field-inline" style="flex: 1.2;">
+            <span class="field-label" style="font-weight: 500;">บ้านเลขที่:</span>
+            <input type="text" id="location_house_no" class="input-fill" placeholder="ระบุบ้านเลขที่">
+          </div>
+          <div class="field-inline" style="flex: 0.8; max-width: 100px;">
+            <span class="field-label" style="font-weight: 500;">หมู่:</span>
+            <input type="text" id="location_moo" class="input-fill" style="text-align: center;" placeholder="หมู่">
+          </div>
+          <div class="field-inline" style="flex: 1.5;">
+            <span class="field-label" style="font-weight: 500;">ตำบล:</span>
+            <input type="text" id="location_tambon" class="input-fill" placeholder="ระบุตำบล">
+          </div>
+        </div>
+
+        <!-- แถวที่ 4: เหตุการณ์ -->
+        <div class="form-row">
+          <span class="field-label">เหตุการณ์:</span>
+          <input type="text" id="incident_event" class="input-fill" placeholder="ระบุรายละเอียดเหตุการณ์">
+        </div>
+
+        <!-- แถวที่ 5: อาการ -->
+        <div class="form-row">
+          <span class="field-label">อาการ:</span>
+          <input type="text" id="incident_symptom" class="input-fill" placeholder="ระบุอาการของผู้ป่วย">
+        </div>
+
+        <!-- แถวที่ 6: นำส่งโรงพยาบาล -->
+        <div class="form-row">
+          <span class="field-label">นำส่งโรงพยาบาล:</span>
+          <input type="text" id="hospital_destination" class="input-fill" placeholder="ระบุชื่อโรงพยาบาลที่นำส่ง">
+        </div>
+
+        <!-- ส่วน: แบบประเมินความรู้สึก -->
+        <div class="section-box">
+          <div class="section-heading">
+            <span>แบบประเมินความรู้สึก</span>
+          </div>
+          <!-- ตาราง T, BP, PR, RR, DTX -->
+          <table class="vital-table">
+            <thead>
+              <tr>
+                <th>T (°C)</th>
+                <th>BP (mmHg)</th>
+                <th>PR (/min)</th>
+                <th>RR (/min)</th>
+                <th>DTX (mg/dL)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" id="vital_t" placeholder="36.5"></td>
+                <td><input type="text" id="vital_bp" placeholder="120/80"></td>
+                <td><input type="text" id="vital_pr" placeholder="80"></td>
+                <td><input type="text" id="vital_rr" placeholder="20"></td>
+                <td><input type="text" id="vital_dtx" placeholder="105"></td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- แถว E4, V5, M6 -->
+          <div class="gcs-row">
+            <div class="gcs-item">
+              <span class="field-label">ตอบสนองทางสายตา E๔:</span>
+              <input type="text" id="gcs_e" placeholder="คะแนน">
+            </div>
+            <div class="gcs-item">
+              <span class="field-label">รู้สึกตัว V๕:</span>
+              <input type="text" id="gcs_v" placeholder="คะแนน">
+            </div>
+            <div class="gcs-item">
+              <span class="field-label">การตอบสนองร่างกาย M๖:</span>
+              <input type="text" id="gcs_m" placeholder="คะแนน">
+            </div>
+          </div>
+        </div>
+
+        <!-- ส่วน: เจ้าหน้าที่ออกปฏิบัติงาน ลำดับ 1 ถึง 4 -->
+        <div class="section-box" style="padding-bottom: 3.5px;">
+          <div class="section-heading">
+            <span>เจ้าหน้าที่ออกปฏิบัติงาน</span>
+          </div>
+          <div class="officers-grid">
+            <div class="officer-item">
+              <span class="officer-num">ลำดับ 1:</span>
+              <input type="text" id="officer_1" class="input-fill" placeholder="ชื่อ - นามสกุล เจ้าหน้าที่">
+            </div>
+            <div class="officer-item">
+              <span class="officer-num">ลำดับ 2:</span>
+              <input type="text" id="officer_2" class="input-fill" placeholder="ชื่อ - นามสกุล เจ้าหน้าที่">
+            </div>
+            <div class="officer-item">
+              <span class="officer-num">ลำดับ 3:</span>
+              <input type="text" id="officer_3" class="input-fill" placeholder="ชื่อ - นามสกุล เจ้าหน้าที่">
+            </div>
+            <div class="officer-item">
+              <span class="officer-num">ลำดับ 4:</span>
+              <input type="text" id="officer_4" class="input-fill" placeholder="ชื่อ - นามสกุล เจ้าหน้าที่">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-text">
+    💡 ปรับจูนฟอนต์และเส้นประเพื่อแก้ปัญหาตัวหนังสือจมและล้น พร้อมระบบปรับขนาดฟอนต์อัตโนมัติก่อนส่งออกภาพ JPEG
+  </div>
+
+  <script>
+    // List of input element IDs for auto-save and management
+    const fieldIds = [
+      'time_info', 'date_info', 'patient_id',
+      'patient_name', 'patient_age',
+      'location_house_no', 'location_moo', 'location_tambon',
+      'incident_event', 'incident_symptom',
+      'hospital_destination',
+      'vital_t', 'vital_bp', 'vital_pr', 'vital_rr', 'vital_dtx',
+      'gcs_e', 'gcs_v', 'gcs_m',
+      'officer_1', 'officer_2', 'officer_3', 'officer_4'
+    ];
+
+    // Function to auto-scale font size if text is long to prevent overflow
+    function autoScaleInput(el) {
+      if (!el || el.closest('.vital-table') || el.closest('.gcs-item')) return;
+      const baseSize = 12; // base size in px
+      el.style.fontSize = baseSize + 'px';
+      
+      let current = baseSize;
+      while (el.scrollWidth > el.clientWidth && current > 8.5) {
+        current -= 0.5;
+        el.style.fontSize = current + 'px';
+      }
+    }
+
+    // Auto-load saved values from localStorage & attach autoScale
+    window.addEventListener('DOMContentLoaded', () => {
+      fieldIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          const saved = localStorage.getItem('form_' + id);
+          if (saved !== null) {
+            el.value = saved;
+            autoScaleInput(el);
+          }
+          // Listen for change to auto-save and auto-scale
+          el.addEventListener('input', () => {
+            localStorage.setItem('form_' + id, el.value);
+            autoScaleInput(el);
+          });
+        }
+      });
+    });
+
+    // Clear form
+    function clearForm() {
+      if (confirm('คุณต้องการล้างข้อมูลในแบบฟอร์มทั้งหมดใช่หรือไม่?')) {
+        fieldIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.value = '';
+            el.style.fontSize = '12px';
+            localStorage.removeItem('form_' + id);
+          }
+        });
+      }
+    }
+
+    // Fill sample data
+    function fillSampleData() {
+      const sample = {
+        time_info: '14:30 น.',
+        date_info: '17 พ.ย. 2569',
+        patient_id: '1-8400-00123-45-6',
+        patient_name: 'นายสมศักดิ์ รักสงบ',
+        patient_age: '54',
+        location_house_no: '88/2',
+        location_moo: '3',
+        location_tambon: 'คลองปราบ',
+        incident_event: 'อุบัติเหตุรถจักรยานยนต์ล้มเองริมถนนสายหลัก ผู้ป่วยล้มลงข้างทาง',
+        incident_symptom: 'มีแผลถลอกตามร่างกาย รู้สึกตัวดี ปวดศีรษะเล็กน้อย ไม่มีอาการซึม',
+        hospital_destination: 'โรงพยาบาลบ้านนาสาร',
+        vital_t: '36.8',
+        vital_bp: '124/82',
+        vital_pr: '78',
+        vital_rr: '18',
+        vital_dtx: '110',
+        gcs_e: '4',
+        gcs_v: '5',
+        gcs_m: '6',
+        officer_1: 'นายประสิทธิ์ ใจกล้า',
+        officer_2: 'นายวิชัย ช่วยเหลือ',
+        officer_3: 'นางสาวนภา อาสาดี',
+        officer_4: 'นายกิตติคุณ มุ่งมั่น'
+      };
+
+      for (const [key, val] of Object.entries(sample)) {
+        const el = document.getElementById(key);
+        if (el) {
+          el.value = val;
+          localStorage.setItem('form_' + key, val);
+          autoScaleInput(el);
+        }
+      }
+    }
+
+    // Save as JPEG Function with complete elimination of sunken & overflowing text
+    async function saveAsJPEG() {
+      const btn = document.getElementById('btnSaveJpeg');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '⏳ กำลังบันทึกภาพ...';
+      btn.disabled = true;
+
+      const sheet = document.getElementById('reportSheet');
+
+      try {
+        if (typeof html2canvas === 'function') {
+          // Render using html2canvas with scale 3 for crisp 300 DPI quality
+          const canvas = await html2canvas(sheet, {
+            scale: 3,
+            backgroundColor: '#ffffff',
+            useCORS: true,
+            logging: false,
+            onclone: (clonedDoc) => {
+              // REPLACE all inputs in the cloned DOM with styled div elements
+              // This completely eliminates html2canvas input rendering bugs (sunken text / clipped Thai vowels)
+              const clonedSheet = clonedDoc.getElementById('reportSheet');
+              const inputs = clonedSheet.querySelectorAll('input');
+
+              inputs.forEach(input => {
+                const srcEl = document.getElementById(input.id);
+                const val = (srcEl ? srcEl.value : input.value) || '';
+                const computed = window.getComputedStyle(input);
+                const isCenter = computed.textAlign === 'center';
+                const hasDottedBorder = input.classList.contains('input-fill') || input.closest('.gcs-item');
+                const isTableInput = !!input.closest('.vital-table');
+                const fontSize = parseFloat(computed.fontSize) || 12;
+                const width = input.offsetWidth;
+
+                // Create clean DOM container for text
+                const textContainer = clonedDoc.createElement('div');
+                textContainer.textContent = val;
+                
+                // Set explicit widths & styles matching the form
+                if (width > 0) {
+                  textContainer.style.width = width + 'px';
+                } else {
+                  textContainer.style.width = '100%';
+                }
+                textContainer.style.minWidth = '0';
+                textContainer.style.boxSizing = 'border-box';
+                textContainer.style.display = 'flex';
+                textContainer.style.alignItems = 'center';
+                textContainer.style.justifyContent = isCenter ? 'center' : 'flex-start';
+                textContainer.style.textAlign = isCenter ? 'center' : 'left';
+                textContainer.style.fontFamily = "'Sarabun', 'TH Sarabun New', sans-serif";
+                textContainer.style.fontSize = fontSize + 'px';
+                textContainer.style.fontWeight = isTableInput ? '600' : '500';
+                textContainer.style.color = '#000000';
+                textContainer.style.lineHeight = '1.45';
+                textContainer.style.whiteSpace = 'nowrap';
+                textContainer.style.overflow = 'hidden';
+
+                // Proper baseline clearance: Thai vowels (ุ ู) will not collide with the underline
+                if (hasDottedBorder) {
+                  textContainer.style.borderBottom = '1.2px dotted #475569';
+                  textContainer.style.padding = '1px 3px 3px 3px';
+                  textContainer.style.minHeight = '23px';
+                } else if (isTableInput) {
+                  textContainer.style.height = '100%';
+                  textContainer.style.padding = '1px 2px';
+                }
+
+                input.parentNode.replaceChild(textContainer, input);
+
+                // Auto-scale font size if text overflows its container
+                if (val && textContainer.scrollWidth > textContainer.clientWidth) {
+                  let fSize = fontSize;
+                  while (textContainer.scrollWidth > textContainer.clientWidth && fSize > 7.5) {
+                    fSize -= 0.5;
+                    textContainer.style.fontSize = fSize + 'px';
+                  }
+                }
+              });
+            }
+          });
+
+          // Convert to JPEG Data URL
+          const jpegData = canvas.toDataURL('image/jpeg', 0.95);
+          triggerDownload(jpegData);
+        } else {
+          // Fallback to Canvas API if html2canvas is not loaded
+          fallbackCanvasExport();
+        }
+      } catch (err) {
+        console.error('Error generating image via html2canvas:', err);
+        fallbackCanvasExport();
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    // Helper to trigger browser download
+    function triggerDownload(dataUrl) {
+      const now = new Date();
+      const dateStr = now.getFullYear() + '' + 
+        String(now.getMonth() + 1).padStart(2, '0') + '' + 
+        String(now.getDate()).padStart(2, '0') + '_' +
+        String(now.getHours()).padStart(2, '0') + 
+        String(now.getMinutes()).padStart(2, '0');
+      
+      const filename = `แบบฟอร์มรายงานปฏิบัติการ_คลองปราบ_${dateStr}.jpg`;
+
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Offline / Fallback Canvas drawing export with safe baseline and auto-scaling
+    function fallbackCanvasExport() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 2480;
+      canvas.height = 1754;
+      const ctx = canvas.getContext('2d');
+
+      // Background
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Outer border
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 14;
+      ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+
+      const startX = 85;
+      const endX = canvas.width - 85;
+      const contentWidth = endX - startX;
+
+      // Header
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 50px Sarabun, sans-serif';
+      ctx.fillText('แบบฟอร์มการรายงานปฏิบัติการจังหวัดสุราษฎร์ธานี', canvas.width / 2, 130);
+
+      ctx.font = 'bold 42px Sarabun, sans-serif';
+      ctx.fillStyle = '#1e293b';
+      ctx.fillText('ชื่อหน่วยบริการ เทศบาลตำบลคลองปราบ', canvas.width / 2, 185);
+
+      // Divider line
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(startX, 215);
+      ctx.lineTo(endX, 215);
+      ctx.stroke();
+
+      // Helper function to draw label + value line with safe clearance & text scaling
+      ctx.textAlign = 'left';
+      function drawField(label, value, x, y, width) {
+        ctx.font = 'bold 34px Sarabun, sans-serif';
+        ctx.fillStyle = '#0f172a';
+        ctx.fillText(label, x, y);
+        const labelW = ctx.measureText(label).width;
+
+        const valX = x + labelW + 10;
+        const lineEndX = x + width;
+        const maxValW = lineEndX - valX - 8;
+
+        // Dotted line with safe 12px clearance below Thai text baseline
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(valX, y + 12);
+        ctx.lineTo(lineEndX, y + 12);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Value text with auto-scaling
+        if (value) {
+          let fSize = 34;
+          ctx.font = `500 ${fSize}px Sarabun, sans-serif`;
+          while (ctx.measureText(value).width > maxValW && fSize > 18) {
+            fSize -= 2;
+            ctx.font = `500 ${fSize}px Sarabun, sans-serif`;
+          }
+          ctx.fillStyle = '#000000';
+          ctx.fillText(value, valX + 8, y);
+        }
+      }
+
+      // Row 1: ข้อมูลเวลา, วันเดือนปี, ID
+      const y1 = 285;
+      const v_time = document.getElementById('time_info')?.value || '';
+      const v_date = document.getElementById('date_info')?.value || '';
+      const v_id = document.getElementById('patient_id')?.value || '';
+      drawField('ข้อมูลเวลา: ', v_time, startX, y1, 650);
+      drawField('วันเดือนปี: ', v_date, startX + 700, y1, 700);
+      drawField('ID: ', v_id, startX + 1450, y1, contentWidth - 1450);
+
+      // Row 2: ชื่อสกุลผู้ป่วย, อายุ
+      const y2 = 370;
+      const v_name = document.getElementById('patient_name')?.value || '';
+      const v_age = document.getElementById('patient_age')?.value || '';
+      drawField('ชื่อสกุลผู้ป่วย: ', v_name, startX, y2, 1600);
+      drawField('อายุ: ', v_age + (v_age ? '  ปี' : ''), startX + 1650, y2, contentWidth - 1650);
+
+      // Row 3: ที่เกิดเหตุ บ้านเลขที่ หมู่ ตำบล
+      const y3 = 455;
+      const v_house = document.getElementById('location_house_no')?.value || '';
+      const v_moo = document.getElementById('location_moo')?.value || '';
+      const v_tambon = document.getElementById('location_tambon')?.value || '';
+      ctx.font = 'bold 34px Sarabun, sans-serif';
+      ctx.fillStyle = '#0f172a';
+      ctx.fillText('ที่เกิดเหตุ:', startX, y3);
+      const locLabelW = ctx.measureText('ที่เกิดเหตุ:').width;
+      drawField('บ้านเลขที่: ', v_house, startX + locLabelW + 20, y3, 620);
+      drawField('หมู่: ', v_moo, startX + locLabelW + 680, y3, 430);
+      drawField('ตำบล: ', v_tambon, startX + locLabelW + 1150, y3, contentWidth - (locLabelW + 1150));
+
+      // Row 4: เหตุการณ์
+      const y4 = 540;
+      const v_event = document.getElementById('incident_event')?.value || '';
+      drawField('เหตุการณ์: ', v_event, startX, y4, contentWidth);
+
+      // Row 5: อาการ
+      const y5 = 625;
+      const v_sym = document.getElementById('incident_symptom')?.value || '';
+      drawField('อาการ: ', v_sym, startX, y5, contentWidth);
+
+      // Row 6: นำส่งโรงพยาบาล
+      const y6 = 710;
+      const v_hosp = document.getElementById('hospital_destination')?.value || '';
+      drawField('นำส่งโรงพยาบาล: ', v_hosp, startX, y6, contentWidth);
+
+      // Section: แบบประเมินความรู้สึก (box)
+      const sec1_y = 780;
+      const sec1_h = 360;
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(startX, sec1_y, contentWidth, sec1_h);
+
+      ctx.fillStyle = '#f1f5f9';
+      ctx.fillRect(startX + 1, sec1_y + 1, contentWidth - 2, 55);
+
+      ctx.font = 'bold 34px Sarabun, sans-serif';
+      ctx.fillStyle = '#0f172a';
+      ctx.fillText('แบบประเมินความรู้สึก', startX + 20, sec1_y + 40);
+
+      // Vital table (T, BP, PR, RR, DTX)
+      const table_y = sec1_y + 75;
+      const table_h = 135;
+      const colW = contentWidth / 5;
+      const headers = ['T (°C)', 'BP (mmHg)', 'PR (/min)', 'RR (/min)', 'DTX (mg/dL)'];
+      const vals = [
+        document.getElementById('vital_t')?.value || '',
+        document.getElementById('vital_bp')?.value || '',
+        document.getElementById('vital_pr')?.value || '',
+        document.getElementById('vital_rr')?.value || '',
+        document.getElementById('vital_dtx')?.value || ''
+      ];
+
+      for (let i = 0; i < 5; i++) {
+        const cx = startX + i * colW;
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(cx, table_y, colW, 60);
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(cx, table_y, colW, 60);
+
+        ctx.font = 'bold 30px Sarabun, sans-serif';
+        ctx.fillStyle = '#334155';
+        ctx.textAlign = 'center';
+        ctx.fillText(headers[i], cx + colW / 2, table_y + 42);
+
+        ctx.strokeRect(cx, table_y + 60, colW, 75);
+        ctx.font = 'bold 34px Sarabun, sans-serif';
+        ctx.fillStyle = '#090d16';
+        ctx.fillText(vals[i], cx + colW / 2, table_y + 112);
+      }
+
+      // GCS row (E4, V5, M6)
+      ctx.textAlign = 'left';
+      const gcs_y = sec1_y + 285;
+      const gcsColW = contentWidth / 3;
+      const gcsE = document.getElementById('gcs_e')?.value || '';
+      const gcsV = document.getElementById('gcs_v')?.value || '';
+      const gcsM = document.getElementById('gcs_m')?.value || '';
+
+      drawField('ตอบสนองทางสายตา E๔: ', gcsE, startX + 20, gcs_y, gcsColW - 40);
+      drawField('รู้สึกตัว V๕: ', gcsV, startX + gcsColW + 20, gcs_y, gcsColW - 40);
+      drawField('การตอบสนองร่างกาย M๖: ', gcsM, startX + gcsColW * 2 + 20, gcs_y, gcsColW - 40);
+
+      // Section: เจ้าหน้าที่ออกปฏิบัติงาน (box)
+      const sec2_y = 1175;
+      const sec2_h = 240;
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(startX, sec2_y, contentWidth, sec2_h);
+
+      ctx.fillStyle = '#f1f5f9';
+      ctx.fillRect(startX + 1, sec2_y + 1, contentWidth - 2, 55);
+
+      ctx.font = 'bold 34px Sarabun, sans-serif';
+      ctx.fillStyle = '#0f172a';
+      ctx.fillText('เจ้าหน้าที่ออกปฏิบัติงาน', startX + 20, sec2_y + 40);
+
+      // 4 Officers
+      const offColW = contentWidth / 2;
+      const off1 = document.getElementById('officer_1')?.value || '';
+      const off2 = document.getElementById('officer_2')?.value || '';
+      const off3 = document.getElementById('officer_3')?.value || '';
+      const off4 = document.getElementById('officer_4')?.value || '';
+
+      const off_row1_y = sec2_y + 120;
+      const off_row2_y = sec2_y + 195;
+
+      drawField('ลำดับ 1: ', off1, startX + 30, off_row1_y, offColW - 60);
+      drawField('ลำดับ 2: ', off2, startX + offColW + 30, off_row1_y, offColW - 60);
+      drawField('ลำดับ 3: ', off3, startX + 30, off_row2_y, offColW - 60);
+      drawField('ลำดับ 4: ', off4, startX + offColW + 30, off_row2_y, offColW - 60);
+
+      // Export JPEG
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+      triggerDownload(dataUrl);
+    }
+  </script>
+</body>
+</html>
