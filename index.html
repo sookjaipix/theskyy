@@ -17,7 +17,7 @@
       --bg-color: #f1f5f9;
       --paper-border: #1e293b;
       --line-color: #475569;
-      --input-bg: #f8fafc;
+      --input-bg: transparent;
       --input-border: #cbd5e1;
     }
 
@@ -235,42 +235,50 @@
       min-width: 0;
     }
 
-    /* Input styling tuned for Thai typography */
+    /* Input styling - ZERO SHADOWS, clean lines, no gray box */
+    input, .input-fill {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      outline: none !important;
+      background-color: transparent !important;
+      background: transparent !important;
+      text-shadow: none !important;
+      filter: none !important;
+    }
+
     .input-fill {
       border: none;
       border-bottom: 1.2px dotted #475569;
-      background: transparent;
       padding: 1px 4px 3px 4px;
       font-size: 12px;
       line-height: 1.45;
       color: #090d16;
-      outline: none;
       width: 100%;
       min-width: 0;
       font-family: inherit;
       font-weight: 500;
       box-sizing: border-box;
-      transition: border-color 0.15s, background-color 0.15s, font-size 0.1s;
+      transition: border-color 0.15s, font-size 0.1s;
     }
 
     .input-fill:focus {
       border-bottom: 1.5px solid #0284c7;
-      background-color: #f0f9ff;
+      background-color: transparent !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      outline: none !important;
     }
 
-    .input-fill::placeholder {
-      color: #94a3b8;
-      font-size: 11px;
-      font-style: italic;
-      font-weight: 400;
-    }
-
-    /* Section Boxes */
+    /* Section Boxes - Clean white, no shadow */
     .section-box {
       border: 1px solid #334155;
       border-radius: 4px;
       padding: 3px 6px 4px 6px;
-      background: #fdfdfd;
+      background: #ffffff;
+      box-shadow: none !important;
     }
 
     .section-heading {
@@ -284,22 +292,24 @@
       line-height: 1.3;
     }
 
-    /* Vital signs & Assessment table */
+    /* Vital signs & Assessment table - No shadows */
     .vital-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 11px;
       margin-bottom: 3.5px;
+      box-shadow: none !important;
     }
 
     .vital-table td, .vital-table th {
       border: 1px solid #cbd5e1;
       padding: 1px 3px;
       text-align: center;
+      box-shadow: none !important;
     }
 
     .vital-table th {
-      background: #f1f5f9;
+      background: #f8fafc;
       font-weight: 600;
       font-size: 10.5px;
       color: #334155;
@@ -310,6 +320,7 @@
     .vital-table td {
       height: 25px;
       vertical-align: middle;
+      background: transparent !important;
     }
 
     .vital-table td input {
@@ -320,8 +331,11 @@
       font-size: 11.5px;
       line-height: 23px;
       padding: 1px 2px;
-      background: transparent;
-      outline: none;
+      background: transparent !important;
+      outline: none !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      -webkit-appearance: none;
       font-family: inherit;
       font-weight: 600;
       color: #090d16;
@@ -329,25 +343,26 @@
     }
 
     .vital-table td input:focus {
-      background: #f0f9ff;
+      background: transparent !important;
+      box-shadow: none !important;
     }
 
-    /* GCS Row */
+    /* GCS Row - Clean inline without gray box or shadow */
     .gcs-row {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 6px;
+      gap: 8px;
       font-size: 11px;
     }
 
     .gcs-item {
       display: flex;
       align-items: center;
-      gap: 3px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 3px;
-      padding: 2px 5px;
+      gap: 4px;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 2px 0;
       min-height: 25px;
       box-sizing: border-box;
     }
@@ -362,23 +377,27 @@
       min-width: 24px;
       border: none;
       border-bottom: 1.2px dotted #64748b;
-      background: transparent;
+      background: transparent !important;
       padding: 1px 2px 2px 2px;
       font-size: 11.5px;
       line-height: 1.4;
       text-align: center;
-      outline: none;
+      outline: none !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      -webkit-appearance: none;
       font-family: inherit;
       font-weight: 600;
       color: #090d16;
     }
 
     .gcs-item input:focus {
-      background: #f0f9ff;
+      background: transparent !important;
       border-bottom-color: #0284c7;
+      box-shadow: none !important;
     }
 
-    /* Officers 4 items */
+    /* Officers 4 items - Clean inline */
     .officers-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -603,11 +622,10 @@
 </head>
 <body>
 
-  <!-- Top Toolbar -->
+  <!-- Top Toolbar (No sample data button) -->
   <div class="toolbar">
     <div class="toolbar-title">
       <span>📄 ระบบบันทึกแบบฟอร์มการรายงานปฏิบัติการ</span>
-      <span class="badge">ขนาดครึ่งหน้า A4 (210 × 148.5 มม.)</span>
     </div>
     <div class="btn-group">
       <button class="btn btn-success" id="btnSaveJpeg" onclick="saveAsJPEG()">
@@ -621,10 +639,6 @@
       <button class="btn btn-primary" onclick="window.print()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         พิมพ์ / PDF
-      </button>
-      <button class="btn btn-secondary" onclick="fillSampleData()">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-        ใส่ข้อมูลตัวอย่าง
       </button>
       <button class="btn btn-danger" onclick="clearForm()">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
@@ -645,71 +659,71 @@
         </div>
 
         <div class="form-grid">
-          <!-- แถวที่ 1: ข้อมูลเวลา, วันเดือนปี, ID -->
+          <!-- แถวที่ 1: ข้อมูลเวลา, วันเดือนปี, ID (No placeholder, no shadow) -->
           <div class="form-row">
             <div class="field-inline" style="flex: 1.1;">
               <span class="field-label">ข้อมูลเวลา:</span>
-              <input type="text" id="time_info" class="input-fill" placeholder="เช่น 14:30 น.">
+              <input type="text" id="time_info" class="input-fill">
             </div>
             <div class="field-inline" style="flex: 1.3;">
               <span class="field-label">วันเดือนปี:</span>
-              <input type="text" id="date_info" class="input-fill" placeholder="เช่น 17 พ.ย. 2569">
+              <input type="text" id="date_info" class="input-fill">
             </div>
             <div class="field-inline" style="flex: 1.5;">
               <span class="field-label">ID:</span>
-              <input type="text" id="patient_id" class="input-fill" placeholder="เลขประจำตัว / รหัสเคส">
+              <input type="text" id="patient_id" class="input-fill">
             </div>
           </div>
 
-          <!-- แถวที่ 2: ชื่อสกุลผู้ป่วย, อายุ -->
+          <!-- แถวที่ 2: ชื่อสกุลผู้ป่วย, อายุ (No placeholder, no shadow) -->
           <div class="form-row">
             <div class="field-inline" style="flex: 3.2;">
               <span class="field-label">ชื่อสกุลผู้ป่วย:</span>
-              <input type="text" id="patient_name" class="input-fill" placeholder="ชื่อ - นามสกุล">
+              <input type="text" id="patient_name" class="input-fill">
             </div>
             <div class="field-inline" style="flex: 0.9;">
               <span class="field-label">อายุ:</span>
-              <input type="text" id="patient_age" class="input-fill" style="text-align: center;" placeholder="ระบุ">
+              <input type="text" id="patient_age" class="input-fill" style="text-align: center;">
               <span class="field-label" style="font-weight: 400;">ปี</span>
             </div>
           </div>
 
-          <!-- แถวที่ 3: ที่เกิดเหตุ บ้านเลขที่ หมู่ ตำบล -->
+          <!-- แถวที่ 3: ที่เกิดเหตุ บ้านเลขที่ หมู่ ตำบล (No placeholder, no shadow) -->
           <div class="form-row">
             <span class="field-label">ที่เกิดเหตุ:</span>
             <div class="field-inline" style="flex: 1.2;">
               <span class="field-label" style="font-weight: 500;">บ้านเลขที่:</span>
-              <input type="text" id="location_house_no" class="input-fill" placeholder="ระบุบ้านเลขที่">
+              <input type="text" id="location_house_no" class="input-fill">
             </div>
             <div class="field-inline" style="flex: 0.8; max-width: 100px;">
               <span class="field-label" style="font-weight: 500;">หมู่:</span>
-              <input type="text" id="location_moo" class="input-fill" style="text-align: center;" placeholder="หมู่">
+              <input type="text" id="location_moo" class="input-fill" style="text-align: center;">
             </div>
             <div class="field-inline" style="flex: 1.5;">
               <span class="field-label" style="font-weight: 500;">ตำบล:</span>
-              <input type="text" id="location_tambon" class="input-fill" placeholder="ระบุตำบล">
+              <input type="text" id="location_tambon" class="input-fill">
             </div>
           </div>
 
-          <!-- แถวที่ 4: เหตุการณ์ -->
+          <!-- แถวที่ 4: เหตุการณ์ (No placeholder, no shadow) -->
           <div class="form-row">
             <span class="field-label">เหตุการณ์:</span>
-            <input type="text" id="incident_event" class="input-fill" placeholder="ระบุรายละเอียดเหตุการณ์">
+            <input type="text" id="incident_event" class="input-fill">
           </div>
 
-          <!-- แถวที่ 5: อาการ -->
+          <!-- แถวที่ 5: อาการ (No placeholder, no shadow) -->
           <div class="form-row">
             <span class="field-label">อาการ:</span>
-            <input type="text" id="incident_symptom" class="input-fill" placeholder="ระบุอาการของผู้ป่วย">
+            <input type="text" id="incident_symptom" class="input-fill">
           </div>
 
-          <!-- แถวที่ 6: นำส่งโรงพยาบาล -->
+          <!-- แถวที่ 6: นำส่งโรงพยาบาล (No placeholder, no shadow) -->
           <div class="form-row">
             <span class="field-label">นำส่งโรงพยาบาล:</span>
-            <input type="text" id="hospital_destination" class="input-fill" placeholder="ระบุชื่อโรงพยาบาลที่นำส่ง">
+            <input type="text" id="hospital_destination" class="input-fill">
           </div>
 
-          <!-- ส่วน: แบบประเมินความรู้สึก -->
+          <!-- ส่วน: แบบประเมินความรู้สึก (No placeholder, no shadow) -->
           <div class="section-box">
             <div class="section-heading">
               <span>แบบประเมินความรู้สึก</span>
@@ -727,11 +741,11 @@
               </thead>
               <tbody>
                 <tr>
-                  <td><input type="text" id="vital_t" placeholder="36.5"></td>
-                  <td><input type="text" id="vital_bp" placeholder="120/80"></td>
-                  <td><input type="text" id="vital_pr" placeholder="80"></td>
-                  <td><input type="text" id="vital_rr" placeholder="20"></td>
-                  <td><input type="text" id="vital_dtx" placeholder="105"></td>
+                  <td><input type="text" id="vital_t"></td>
+                  <td><input type="text" id="vital_bp"></td>
+                  <td><input type="text" id="vital_pr"></td>
+                  <td><input type="text" id="vital_rr"></td>
+                  <td><input type="text" id="vital_dtx"></td>
                 </tr>
               </tbody>
             </table>
@@ -739,20 +753,20 @@
             <div class="gcs-row">
               <div class="gcs-item">
                 <span class="field-label">ตอบสนองทางสายตา E๔:</span>
-                <input type="text" id="gcs_e" placeholder="คะแนน">
+                <input type="text" id="gcs_e">
               </div>
               <div class="gcs-item">
                 <span class="field-label">รู้สึกตัว V๕:</span>
-                <input type="text" id="gcs_v" placeholder="คะแนน">
+                <input type="text" id="gcs_v">
               </div>
               <div class="gcs-item">
                 <span class="field-label">การตอบสนองร่างกาย M๖:</span>
-                <input type="text" id="gcs_m" placeholder="คะแนน">
+                <input type="text" id="gcs_m">
               </div>
             </div>
           </div>
 
-          <!-- ส่วน: เจ้าหน้าที่ออกปฏิบัติงาน ลำดับ 1 ถึง 4 -->
+          <!-- ส่วน: เจ้าหน้าที่ออกปฏิบัติงาน ลำดับ 1 ถึง 4 (No placeholder, no shadow) -->
           <div class="section-box" style="padding-bottom: 3.5px;">
             <div class="section-heading">
               <span>เจ้าหน้าที่ออกปฏิบัติงาน</span>
@@ -760,19 +774,19 @@
             <div class="officers-grid">
               <div class="officer-item">
                 <span class="officer-num">ลำดับ 1:</span>
-                <input type="text" id="officer_1" class="input-fill" placeholder="ชื่อ - นามสกุล เจ้าหน้าที่">
+                <input type="text" id="officer_1" class="input-fill">
               </div>
               <div class="officer-item">
                 <span class="officer-num">ลำดับ 2:</span>
-                <input type="text" id="officer_2" class="input-fill" placeholder="ชื่อ - นามสกุล เจ้าหน้าที่">
+                <input type="text" id="officer_2" class="input-fill">
               </div>
               <div class="officer-item">
                 <span class="officer-num">ลำดับ 3:</span>
-                <input type="text" id="officer_3" class="input-fill" placeholder="ชื่อ - นามสกุล เจ้าหน้าที่">
+                <input type="text" id="officer_3" class="input-fill">
               </div>
               <div class="officer-item">
                 <span class="officer-num">ลำดับ 4:</span>
-                <input type="text" id="officer_4" class="input-fill" placeholder="ชื่อ - นามสกุล เจ้าหน้าที่">
+                <input type="text" id="officer_4" class="input-fill">
               </div>
             </div>
           </div>
@@ -782,9 +796,7 @@
     </div>
   </div>
 
-  <div class="tip-text">
-    💡 รองรับการบันทึกภาพ JPEG ลงแกลเลอรีมือถือโดยตรง และปุ่ม "มุมมองพอดีจอ" เพื่อการใช้งานบนโทรศัพท์ที่สะดวกรวดเร็ว
-  </div>
+
 
   <!-- Mobile Gallery Save Modal -->
   <div id="mobileSaveModal" class="modal-backdrop" style="display: none;">
@@ -918,8 +930,13 @@
       }
     }
 
-    // Auto-load saved values from localStorage & attach autoScale
+    // Auto-load saved values from localStorage & clear any leftover sample data
     window.addEventListener('DOMContentLoaded', () => {
+      // Clear sample data if previously stored
+      if (localStorage.getItem('form_patient_name') === 'นายสมศักดิ์ รักสงบ') {
+        fieldIds.forEach(id => localStorage.removeItem('form_' + id));
+      }
+
       fieldIds.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
@@ -947,44 +964,6 @@
             localStorage.removeItem('form_' + id);
           }
         });
-      }
-    }
-
-    // Fill sample data
-    function fillSampleData() {
-      const sample = {
-        time_info: '14:30 น.',
-        date_info: '17 พ.ย. 2569',
-        patient_id: '1-8400-00123-45-6',
-        patient_name: 'นายสมศักดิ์ รักสงบ',
-        patient_age: '54',
-        location_house_no: '88/2',
-        location_moo: '3',
-        location_tambon: 'คลองปราบ',
-        incident_event: 'อุบัติเหตุรถจักรยานยนต์ล้มเองริมถนนสายหลัก ผู้ป่วยล้มลงข้างทาง',
-        incident_symptom: 'มีแผลถลอกตามร่างกาย รู้สึกตัวดี ปวดศีรษะเล็กน้อย ไม่มีอาการซึม',
-        hospital_destination: 'โรงพยาบาลบ้านนาสาร',
-        vital_t: '36.8',
-        vital_bp: '124/82',
-        vital_pr: '78',
-        vital_rr: '18',
-        vital_dtx: '110',
-        gcs_e: '4',
-        gcs_v: '5',
-        gcs_m: '6',
-        officer_1: 'นายประสิทธิ์ ใจกล้า',
-        officer_2: 'นายวิชัย ช่วยเหลือ',
-        officer_3: 'นางสาวนภา อาสาดี',
-        officer_4: 'นายกิตติคุณ มุ่งมั่น'
-      };
-
-      for (const [key, val] of Object.entries(sample)) {
-        const el = document.getElementById(key);
-        if (el) {
-          el.value = val;
-          localStorage.setItem('form_' + key, val);
-          autoScaleInput(el);
-        }
       }
     }
 
@@ -1093,10 +1072,8 @@
           const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768);
 
           if (isMobile) {
-            // Open mobile gallery modal
             openMobileModal(currentDataUrl);
           } else {
-            // Desktop: Direct download
             triggerDownload(currentDataUrl, currentFilename);
           }
         }, 'image/jpeg', 0.95);
